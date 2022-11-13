@@ -1,0 +1,23 @@
+{
+  "name": "electron-example",
+  "version": "1.0.0",
+  "description": "simple electron example",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "electron ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Acaippa/electron-example.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Acaippa/electron-example/issues"
+  },
+  "homepage": "https://github.com/Acaippa/electron-example#readme",
+  "dependencies": {
+    "electron": "^21.2.3"
+  }
+}
