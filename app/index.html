@@ -36,9 +36,9 @@
 
 	var itemList = []
 
-	function updateItemContainer() {
-		let itemContainer = document.querySelector("#item-container")
+	var itemContainer = document.querySelector('#item-container')
 
+	function updateItemContainer() {
 		for(let i = 0; i < itemList.length; i++){
 			if (i < itemContainer.children.length){
 				if (itemContainer.children[i].innerHTML == itemList[i]){
@@ -63,8 +63,26 @@
 	}
 
 	addEventListener('beforeunload', (event) => {
+		for (let i = 0; i < itemContainer.children.length; i++){
+			if (itemContainer.children[i].innerHTML != itemList[i]){
+				itemList.push(itemContainer.children[i].innerHTML)
+			}
+		}
 		ipcRenderer.send("window:close", itemList)
 	})
+
+	ipcRenderer.on('window:open', function(event, message){
+		if (message == null){console.log("bruh")}else{
+			let container = document.querySelector("#item-container")
+			for(let i = 0; i < message.length; i++){
+				let paragraph = document.createElement("p")
+				paragraph.innerHTML = message[i]
+				container.appendChild(paragraph)
+			}
+		}
+	})
+
+	console.log(itemContainer.children)
 </script>
 
 </body>

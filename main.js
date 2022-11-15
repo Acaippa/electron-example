@@ -1,6 +1,10 @@
 const { app, BrowserWindow, ipcMain } = require('electron')
 const fs = require('fs')
 
+var dict = {
+  items : []
+}
+
 const createWindow = () => {
   const win = new BrowserWindow({
     width: 800,
@@ -14,17 +18,24 @@ const createWindow = () => {
 
   win.loadFile('app/index.html')
 
+  fs.readFile('items.json', 'utf8', function(err, data){
+    data = JSON.parse(data)
+    win.webContents.send('window:open', data.items)
+  })
+
 }
 
 app.whenReady().then(() => {
   createWindow()
 })
 
-function saveToJson(itemToSave){
-  let json = JSON.stringify(itemToSave)
-  fs.writeFile('items.json', json, 'utf8', function(){})
+function saveItemsToJson(itemToSave){
+  fs.writeFile('items.json', JSON.stringify(itemToSave), 'utf8', function(){})
 }
 
 ipcMain.on('window:close', (event, item) => {
-  saveToJson(item)
+  for (let i = 0; i < item.length; i++){
+    dict.items.push(item[i])
+  }
+  saveItemsToJson(dict)
 })
