@@ -39,20 +39,13 @@
 	var itemContainer = document.querySelector('#item-container')
 
 	function updateItemContainer() {
+		while (itemContainer.firstChild){
+			itemContainer.removeChild(itemContainer.firstChild)
+		}
 		for(let i = 0; i < itemList.length; i++){
-			if (i < itemContainer.children.length){
-				if (itemContainer.children[i].innerHTML == itemList[i]){
-
-				}else{
-					let paragraph = document.createElement("p")
-					paragraph.innerHTML = itemList[i]
-					itemContainer.appendChild(paragraph)
-				}
-			}else{
-				let paragraph = document.createElement("p")
-				paragraph.innerHTML = itemList[i]
-				itemContainer.appendChild(paragraph)
-			}
+			let paragraph = document.createElement("p")
+			paragraph.innerHTML = itemList[i]
+			itemContainer.appendChild(paragraph)
 		}
 	}
 
@@ -72,9 +65,10 @@
 	})
 
 	ipcRenderer.on('window:open', function(event, message){
-		if (message == null){console.log("bruh")}else{
+		if (message != null){
 			let container = document.querySelector("#item-container")
 			for(let i = 0; i < message.length; i++){
+				itemList.push(message[i])
 				let paragraph = document.createElement("p")
 				paragraph.innerHTML = message[i]
 				container.appendChild(paragraph)
