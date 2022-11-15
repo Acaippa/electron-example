@@ -14,8 +14,8 @@
 		<div class="col-sm-6 col-12 p-0">
 			<div class="m-2 bg-1 p-2 rounded">
 				<h2>Shopping list</h2>
-				<div id="item-container">
-					
+				<div class="shopping-list text-center" id="item-container">
+
 				</div>
 			</div>
 		</div>
@@ -23,13 +23,49 @@
 		<div class="col-sm-6 col-12 p-0">
 			<div class="m-2 bg-1 p-2 rounded">
 				<h2>Add Item</h2>
-				<form onsubmit="return false">
-					<input class="my-2 rounded" type="text">
+				<form onsubmit="updateList(); return false">
+					<input id="item" class="my-2 rounded" type="text">
 					<button class="rounded" onclick="this.form.submit">Add</button>
 				</form>
 			</div>
 		</div>
 	</div>
+
+<script>
+	const { ipcRenderer } = require('electron')
+
+	var itemList = []
+
+	function updateItemContainer() {
+		let itemContainer = document.querySelector("#item-container")
+
+		for(let i = 0; i < itemList.length; i++){
+			if (i < itemContainer.children.length){
+				if (itemContainer.children[i].innerHTML == itemList[i]){
+
+				}else{
+					let paragraph = document.createElement("p")
+					paragraph.innerHTML = itemList[i]
+					itemContainer.appendChild(paragraph)
+				}
+			}else{
+				let paragraph = document.createElement("p")
+				paragraph.innerHTML = itemList[i]
+				itemContainer.appendChild(paragraph)
+			}
+		}
+	}
+
+	function updateList(){
+		let input = document.querySelector("#item")
+		itemList.push(input.value)
+		updateItemContainer()
+	}
+
+	addEventListener('beforeunload', (event) => {
+		ipcRenderer.send("window:close", itemList)
+	})
+</script>
 
 </body>
 </html>
