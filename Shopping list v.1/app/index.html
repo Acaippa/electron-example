@@ -24,7 +24,7 @@
 			<div class="m-2 bg-1 p-2 rounded">
 				<h2>Add Item</h2>
 				<form onsubmit="updateList(); return false">
-					<input id="item" class="my-2 rounded" type="text">
+					<input id="item-button" class="my-2 rounded" type="text">
 					<button class="rounded" onclick="this.form.submit">Add</button>
 				</form>
 			</div>
@@ -50,7 +50,7 @@
 	}
 
 	function updateList(){ // Push the current item into the itemList.
-		let input = document.querySelector("#item")
+		let input = document.querySelector("#item-button")
 		itemList.push(input.value)
 		updateItemContainer()
 	}
@@ -69,9 +69,9 @@
 			let container = document.querySelector("#item-container")
 			for(let i = 0; i < message.length; i++){
 				itemList.push(message[i])
-				let paragraph = document.createElement("p")
-				paragraph.innerHTML = message[i]
-				container.appendChild(paragraph)
+				let element = document.createElement("h4")
+				element.innerHTML = message[i]
+				container.appendChild(element)
 			}
 		}
 	})
