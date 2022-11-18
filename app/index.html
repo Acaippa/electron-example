@@ -38,24 +38,24 @@
 
 	var itemContainer = document.querySelector('#item-container')
 
-	function updateItemContainer() {
+	function updateItemContainer() { // Display all the items inside the itemList.
 		while (itemContainer.firstChild){
 			itemContainer.removeChild(itemContainer.firstChild)
 		}
 		for(let i = 0; i < itemList.length; i++){
-			let paragraph = document.createElement("p")
-			paragraph.innerHTML = itemList[i]
-			itemContainer.appendChild(paragraph)
+			let element = document.createElement("h4")
+			element.innerHTML = itemList[i]
+			itemContainer.appendChild(element)
 		}
 	}
 
-	function updateList(){
+	function updateList(){ // Push the current item into the itemList.
 		let input = document.querySelector("#item")
 		itemList.push(input.value)
 		updateItemContainer()
 	}
 
-	addEventListener('beforeunload', (event) => {
+	addEventListener('beforeunload', (event) => { // Send all the items to mainProcess to be saved.
 		for (let i = 0; i < itemContainer.children.length; i++){
 			if (itemContainer.children[i].innerHTML != itemList[i]){
 				itemList.push(itemContainer.children[i].innerHTML)
@@ -64,7 +64,7 @@
 		ipcRenderer.send("window:close", itemList)
 	})
 
-	ipcRenderer.on('window:open', function(event, message){
+	ipcRenderer.on('window:open', function(event, message){ // Add all the items saved in JSON into itemList and Display them.
 		if (message != null){
 			let container = document.querySelector("#item-container")
 			for(let i = 0; i < message.length; i++){
