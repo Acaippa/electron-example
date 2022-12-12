@@ -1,0 +1,19 @@
+.bg-0 {
+	background-color: #202020;
+}
+
+.bg-1 {
+	background-color: #303030;
+}
+
+.bg-2 {
+	background-color: #404040;
+}
+
+.bg-3 {
+	background-color: #505050;
+}
+
+h1, h2, h3, h4, h5, p {
+	color: white;
+}
