@@ -1,8 +1,8 @@
 {
 	"template" : {
-		"name" : "",
-		"amount" : 0,
-		"notes" : "",
-		"ID_" : 0
+		"name" : "text",
+		"amount" : "number",
+		"notes" : "text",
+		"ID_" : "number"
 	}
 }
