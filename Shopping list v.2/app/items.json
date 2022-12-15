@@ -1,0 +1,9 @@
+{
+	"template" : {
+		"name" : "text",
+		"amount" : "number",
+		"notes" : "text",
+		"ID_" : "number"
+	},
+	"items" : []
+}
