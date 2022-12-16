@@ -93,8 +93,8 @@ function updateItemContainer() {
 		notes.classList.add("item-notes")
 
 		heading.innerHTML = item.name
-		amount.innerHTML = item.amount
-		notes.innerHTML = item.notes
+		amount.innerHTML = `Amount: ${item.amount}`
+		notes.innerHTML = `Notes: ${item.notes}`
 
 		element.appendChild(heading)
 		element.appendChild(amount)

@@ -9,7 +9,7 @@
 </head>
 <body class="bg-0">
 	<h1 class="p-3 text-center">Shopping List</h1>
-	<div class="d-flex row w-100 m-0 justify-content-around">
+	<div class="d-flex flex-column flex-sm-row w-100 justify-content-around">
 		<div class="col-6" style="max-width: 500px;">
 			<div class="bg-1 rounded p-2">
 				<h2>Items</h2>
@@ -18,15 +18,14 @@
 				</div>
 			</div>
 		</div>
-		<div class="col-6" style="max-width: 700px">
-			<div class="bg-1 rounded p-2">
+		<div class="col-6 mb-5" style="max-width: 700px">
+			<div class="bg-1 rounded p-2 mt-5">
 				<h2>Add item</h2>
 				<form id="add-item-form" onsubmit="return false">
 				</form>
 			</div>
 		</div>
 	</div>
-	<!-- <script src="/javascripts/application.js" type="text/javascript" charset="utf-8" async defer></script> -->
 	<script type="text/javascript" src="index.js" async defer></script>
 </body>
 </html>
