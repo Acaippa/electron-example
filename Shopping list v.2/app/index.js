@@ -1,17 +1,19 @@
 const fs = require("fs")
 
-const json = JSON.parse(fs.readFileSync('app/items.json', {encoding:'utf8', flag:'r'})) // Get template from items.json
+var json = fs.readFileSync('app/items.json', {encoding:'utf8', flag:'r'}) // Get template from items.json
 
-const template = json.template
+json = JSON.parse(json)
 
-const items = json.items
+const template = json["template"]
+
+const items = json["items"]
+console.log(json.items)
 	
 const form = document.querySelector("#add-item-form")
 
 const itemList = []
 
-const itemDiv = document.querySelector("#item-div")
-console.log(itemDiv)
+const itemContainer = document.querySelector("#item-container")
 
 function makeInput(params){
 	let element = document.createElement("input")
@@ -47,18 +49,21 @@ function generateForm() {
 function loadItems(){
 	for (let i = 0; i < items.length; i++) {
 		let item = items[i]
-		itemList.push(JSON.parse(item))
+		itemList.push(item)
 	}
+	updateItemContainer()
 }
 
 function addItem(){
 	let item = {}
 	for (let i = 0; i < form.children.length; i++){
 		let input = form.children[i]
-		item[input.name] = input.value
+		if (input.type != "submit"){
+			item[input.name] = input.value
+		}
 	}
 	itemList.push(item)
-	updateItemDiv()
+	updateItemContainer()
 }
 
 function clearChildren(element){
@@ -70,8 +75,8 @@ function clearChildren(element){
 	}
 }
 
-function updateItemDiv() {
-	clearChildren(itemDiv)
+function updateItemContainer() {
+	clearChildren(itemContainer)
 	for (let i = 0; i < itemList.length; i++){
 		let item = itemList[i]
 
@@ -95,7 +100,7 @@ function updateItemDiv() {
 		element.appendChild(amount)
 		element.appendChild(notes)
 
-		itemDiv.appendChild(element)
+		itemContainer.appendChild(element)
 	}
 }
 generateForm()
@@ -103,8 +108,9 @@ loadItems() // Load items from JSON
 
 window.onbeforeunload = function() {
 	for (let i = 0; i < itemList.length; i++){
-		json.items.push(item)
+		if (json.items.includes(itemList[i]) == false){
+			json.items.push(itemList[i])
+		}
 	}
-	fs.writeFile('app/items.json', JSON.stringify(json), (err) => {console.log(err)})
-	return false
+	fs.writeFile('app/items.json', JSON.stringify(json), (err) => {console.log(err); return false}) // Dont close the app if we cant write to json
 }
