@@ -1,3 +1,5 @@
+const {ipcRenderer} = require('electron')
+
 const fs = require("fs")
 
 var json = fs.readFileSync('app/items.json', {encoding:'utf8', flag:'r'}) // Get template from items.json
@@ -7,7 +9,6 @@ json = JSON.parse(json)
 const template = json["template"]
 
 const items = json["items"]
-console.log(json.items)
 	
 const form = document.querySelector("#add-item-form")
 
@@ -106,11 +107,14 @@ function updateItemContainer() {
 generateForm()
 loadItems() // Load items from JSON
 
-window.onbeforeunload = function() {
+ipcRenderer.on('json:save', (e, msg) => {
 	for (let i = 0; i < itemList.length; i++){
 		if (json.items.includes(itemList[i]) == false){
 			json.items.push(itemList[i])
 		}
 	}
-	fs.writeFile('app/items.json', JSON.stringify(json), (err) => {console.log(err); return false}) // Dont close the app if we cant write to json
-}
+	fs.writeFile('app/items.json', JSON.stringify(json), (err) => {
+		console.log(err) // TODO: Handle error
+	})
+	window.close()
+})
