@@ -1,5 +1,7 @@
 const {ipcRenderer} = require('electron')
 
+import {ContextMenu} from "./context-menu.js"
+
 const fs = require("fs")
 
 var json = fs.readFileSync('app/items.json', {encoding:'utf8', flag:'r'}) // Get template from items.json
@@ -118,3 +120,5 @@ ipcRenderer.on('json:save', (e, msg) => {
 	})
 	window.close()
 })
+
+let contextMenu = new ContextMenu()
