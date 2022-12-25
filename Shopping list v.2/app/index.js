@@ -123,6 +123,10 @@ ipcRenderer.on('json:save', (e, msg) => {
 
 let contextMenu = new ContextMenu()
 
-contextMenu.createMenu("test", {"click me!" : function() {console.log("im a gay one")}})
+contextMenu.createMenu("test", {
+	"click me!" : function() {console.log("im a gay one")},
+	"copy" : function() {console.log("bruh")}
+
+})
 contextMenu.bindMenu(document.querySelectorAll('.item-div'), "test")
 
