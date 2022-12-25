@@ -32,39 +32,49 @@ export class ContextMenu {
 
 	bindMenu(elements, templateName){
 		if (this.templates.hasOwnProperty(templateName)){ // If there is a template with this name, add an object with the elements being the key and the template name being the value.
-			this.menus.elements = templateName
+			this.menus[`${templateName}`] = elements // Bind the name of the template to a certain collection of elements
 		} else{
 			throw 'No template with that name!'
 		}
 	}
 
-	showContextMenu(element){
+	showContextMenu(element){ // Check if the element has a template bounded to it
 		let found = false
 		let menuKeys = Object.keys(this.menus)
+
 		for (let i = 0; i < menuKeys.length; i++){ // Loop though all the objects in this.menus. If the element is found parse elements context menu
-			let elements = menuKeys[i]
+
+			let templateName = menuKeys[i]
+
+			let elements = Array.from(this.menus[templateName])
+
 			if (elements.includes(element) == true){
-				this.parseShowTemplate(this.menus.elements, element)
+				this.parseShowTemplate(templateName, element)
 				found = true
 				break
 			}
 		}
 		if (found == false){
-			this.parseShowTemplate(this.templates.Default_, element)
+			this.parseShowTemplate("Default_", element)
 		}
 	}
 
-	parseShowTemplate(template, element){
+	parseShowTemplate(templateName, element){ // Convert the template into context menu and display it
 		while (this.contextMenuDivision.lastElementChild){
 			this.contextMenuDivision.removeChild(this.contextMenuDivision.lastElementChild)
 		}
-		let templateKeys = Object.keys(template)
-		templateKeys.forEach((key) => {
-			let func = template[key]
+
+		let template = this.templates[templateName]
+
+		let templateItems = Object.keys(template)
+
+		templateItems.forEach((item) => {
+			let func = template[item]
+
 			if (func =! null){
 				let button = document.createElement('button')
-				button.innerHTML = key
-				button.onclick = function() {return template[key](element)}
+				button.innerHTML = item
+				button.onclick = function() {return template[item](element)}
 				this.contextMenuDivision.appendChild(button)
 			}
 		})
