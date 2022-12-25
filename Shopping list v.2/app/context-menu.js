@@ -1,27 +1,29 @@
 export class ContextMenu {
 	constructor() {
-		this.menus = {}
-		this.templates = {
+		this.menuElementBindings = {} // Binds elements with a contextMenuTemplate
+		this.contextMenuTemplates = {
 			"Default_" : {
 				"Default button" : function(elem) {console.log("Element: ", elem)}
 			}
 		}
 
+		// Create contextMenu element
 		this.contextMenuDivision = document.createElement('div')
 		this.contextMenuDivision.classList.add('context-menu')
 		document.body.appendChild(this.contextMenuDivision)
 
+		// Overriding documents contextMenu event
 		document.addEventListener("contextmenu", (event) => {this.x = event.x, this.y = event.y; this.showContextMenu(event.target)})
 
+		// Events that hides the contextMenu
 		document.addEventListener("click", (event) => {this.hideContextMenuDiv()})
 		document.addEventListener("mousewheel", (event) => {this.hideContextMenuDiv()})
 	}
 
-	createMenu(name, template){ // Add Ojbect to this.templates with name as the key and template as the value.
-		if (template.constructor == Object){
-			this.templates[`${name}`] = template
-		}
-		else{
+	createMenu(name, template){ // Add template to this.contextMenuTemplates
+		if (template.constructor == Object){ // Check if template is a dictionary
+			this.contextMenuTemplates[`${name}`] = template
+		}else{
 			throw 'Template needs to be an Object!'
 		}
 	}
@@ -31,8 +33,8 @@ export class ContextMenu {
 	}
 
 	bindMenu(elements, templateName){
-		if (this.templates.hasOwnProperty(templateName)){ // If there is a template with this name, add an object with the elements being the key and the template name being the value.
-			this.menus[`${templateName}`] = elements // Bind the name of the template to a certain collection of elements
+		if (this.contextMenuTemplates.hasOwnProperty(templateName)){ // Check if a template with templateName exists in this.contextMenuTemplates
+			this.menuElementBindings[`${templateName}`] = elements // Bind the name of the template to a collection of elements
 		} else{
 			throw 'No template with that name!'
 		}
@@ -40,13 +42,13 @@ export class ContextMenu {
 
 	showContextMenu(element){ // Check if the element has a template bounded to it
 		let found = false
-		let menuKeys = Object.keys(this.menus)
+		let menuKeys = Object.keys(this.menuElementBindings)
 
-		for (let i = 0; i < menuKeys.length; i++){ // Loop though all the objects in this.menus. If the element is found parse elements context menu
+		for (let i = 0; i < menuKeys.length; i++){ // Loop though all the objects in this.menuElementBindings. If the element is found parse elements context menu
 
 			let templateName = menuKeys[i]
 
-			let elements = Array.from(this.menus[templateName])
+			let elements = Array.from(this.menuElementBindings[templateName])
 
 			if (elements.includes(element) == true){
 				this.parseShowTemplate(templateName, element)
@@ -64,7 +66,7 @@ export class ContextMenu {
 			this.contextMenuDivision.removeChild(this.contextMenuDivision.lastElementChild)
 		}
 
-		let template = this.templates[templateName]
+		let template = this.contextMenuTemplates[templateName]
 
 		let templateItems = Object.keys(template)
 
