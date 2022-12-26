@@ -69,6 +69,12 @@ function addItem(){
 	updateItemContainer()
 }
 
+function removeItem(item){
+	let itemIndex = itemList.indexOf(item)
+	itemList.splice(itemIndex, 1)
+	updateItemContainer()
+}
+
 function clearChildren(element){
 	let last = element.lastElementChild
 
@@ -109,24 +115,23 @@ function updateItemContainer() {
 generateForm()
 loadItems() // Load items from JSON
 
-ipcRenderer.on('json:save', (e, msg) => {
-	for (let i = 0; i < itemList.length; i++){
-		if (json.items.includes(itemList[i]) == false){
-			json.items.push(itemList[i])
-		}
-	}
+ipcRenderer.on('json:save', (e) => {
+	json.items = itemList
 	fs.writeFile('app/items.json', JSON.stringify(json), (err) => {
-		console.log(err) // TODO: Handle error
+		if (err){
+			console.log(err)
+		}else{
+			ipcRenderer.send("app:close", {})
+		}
 	})
-	window.close()
 })
 
 let contextMenu = new ContextMenu()
 
 contextMenu.createMenu("test", {
 	"click me!" : function() {console.log("im a gay one")},
-	"copy" : function() {console.log("bruh")}
+	"remove item" : function(element) {removeItem(element)}
 
 })
-contextMenu.bindMenu(document.querySelectorAll('.item-div'), "test")
+contextMenu.bindMenu("document.querySelectorAll('.item-div')", "test")
 

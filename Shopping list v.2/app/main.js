@@ -1,7 +1,9 @@
 const { app, BrowserWindow, ipcMain } = require('electron')
 
+var saved = false
+
 const createWindow = () => {
-	const win = new BrowserWindow({
+	win = new BrowserWindow({
 		width: 800,
 		height : 600,
 		webPreferences: {
@@ -13,9 +15,20 @@ const createWindow = () => {
 	win.loadFile("app/index.html")
 	win.openDevTools()
 	win.removeMenu()
-	app.on('close', (event) => {event.preventDefault(); win.webContents.send("json:save", {})})
+	win.on('close', (e) => {
+		if (saved == false){
+			e.preventDefault()
+			win.webContents.send("json:save", {})
+			saved = true
+		}
+	})
+	ipcMain.on('app:close', () => {
+		win.close()
+	})
 }
+	
 
 app.whenReady().then(() => {
 	createWindow()
 })
+

@@ -19,6 +19,7 @@ export class ContextMenu {
 		document.addEventListener("click", (event) => {this.hideContextMenuDiv()})
 		document.addEventListener("mousewheel", (event) => {this.hideContextMenuDiv()})
 	}
+	
 
 	createMenu(name, template){ // Add template to this.contextMenuTemplates
 		if (template.constructor == Object){ // Check if template is a dictionary
@@ -48,7 +49,7 @@ export class ContextMenu {
 
 			let templateName = menuKeys[i]
 
-			let elements = Array.from(this.menuElementBindings[templateName])
+			let elements = Array.from(this.updateQuery(this.menuElementBindings[templateName]))
 
 			if (elements.includes(element) == true){
 				this.parseShowTemplate(templateName, element)
@@ -84,5 +85,11 @@ export class ContextMenu {
 		this.contextMenuDivision.style.display = 'block'
 		this.contextMenuDivision.style.top = `${this.y}px`
 		this.contextMenuDivision.style.left = `${this.x}px`
+	}
+
+	updateQuery(query){
+		console.log(eval(query))
+
+		return eval(query)
 	}
 }
