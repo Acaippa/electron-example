@@ -101,7 +101,7 @@ function updateItemContainer() {
 		amount.classList.add("item-amount")
 		notes.classList.add("item-notes")
 
-		heading.innerHTML = item.name
+		heading.innerHTML = `${item.name.charAt(0).toUpperCase()}${item.name.slice(1)}` // Capitalize the first letter
 		amount.innerHTML = `Amount: ${item.amount}`
 		notes.innerHTML = `Notes: ${item.notes}`
 
@@ -129,9 +129,9 @@ ipcRenderer.on('json:save', (e) => {
 let contextMenu = new ContextMenu()
 
 contextMenu.createMenu("test", {
-	"click me!" : function() {console.log("im a gay one")},
-	"remove item" : function(element) {removeItem(element)}
+	"Remove item" : function(element) {removeItem(element)},
+	"Duplicate item" : function(element) {duplicateitem(element)}
 
 })
-contextMenu.bindMenu("document.querySelectorAll('.item-div')", "test")
+contextMenu.bindMenu("document.querySelectorAll('.item-div')*", "test")
 

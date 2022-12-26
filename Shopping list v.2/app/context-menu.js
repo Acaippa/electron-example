@@ -49,7 +49,7 @@ export class ContextMenu {
 
 			let templateName = menuKeys[i]
 
-			let elements = Array.from(this.updateQuery(this.menuElementBindings[templateName]))
+			let elements = this.updateQuery(this.menuElementBindings[templateName])
 
 			if (elements.includes(element) == true){
 				this.parseShowTemplate(templateName, element)
@@ -88,8 +88,20 @@ export class ContextMenu {
 	}
 
 	updateQuery(query){
-		console.log(eval(query))
+		let elements = null
 
-		return eval(query)
+		if (query.charAt(query.length-1) == "*"){ // Include the children in query
+			elements = Array.from(eval(query.slice(0, query.length-1)))
+			elements.forEach((element) => {
+				let children = Array.from(element.children)
+				children.forEach((child) => {
+					elements.push(child)
+				})
+			})
+		}else{
+			elements = Array.from(eval(query))
+		}
+
+		return elements
 	}
 }

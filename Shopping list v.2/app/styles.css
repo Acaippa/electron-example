@@ -49,12 +49,27 @@ h1, h2, h3, h4, h5, p {
 }
 
 .item-div {
+	display: flex;
+	flex-direction: column;
 	border-style: solid;
 	border-width: 1px;
 	border-radius: 5px;
 	border-color: #404040;
 	padding: 10px;
 	margin: 15px;
+}
+
+.item-amount, .item-notes{
+	color: white;
+	font-weight: thin;
+}
+
+.item-header {
+	font-weight: bolder;
+}
+
+.item-div > *{
+	display: inline-block !important;
 }
 
 ::-webkit-scrollbar {
