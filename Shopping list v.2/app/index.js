@@ -92,6 +92,23 @@ function generateId(){
 	return `${Math.floor(Math.random() * 9)}${Math.floor(Math.random() * 9)}${Math.floor(Math.random() * 9)}${Math.floor(Math.random() * 9)}${Math.floor(Math.random() * 9)}`
 }
 
+function duplicateItem(element){
+	let id = element.querySelector('id').innerHTML
+	let item = findItemById(id)
+	item.ID_ = generateId()
+	itemList.push(item)
+	updateItemContainer()
+}
+
+function findItemById(id){ // Return item with corresponding ID
+	for (let i = 0; i < itemList.length; i++){
+		let item = itemList[i]
+		if (item.ID_ == id){
+			return item
+		}
+	}
+}
+
 function updateItemContainer() {
 	clearChildren(itemContainer)
 	for (let i = 0; i < itemList.length; i++){
@@ -103,19 +120,23 @@ function updateItemContainer() {
 		let heading = document.createElement("h3")
 		let amount = document.createElement("p")
 		let notes = document.createElement("p")
+		let id = document.createElement("id")
 
 		element.classList.add("item-div")
 		heading.classList.add("item-header")
 		amount.classList.add("item-amount")
 		notes.classList.add("item-notes")
+		id.setAttribute('style', 'display:none !important');
 
 		heading.innerHTML = `${item.name.charAt(0).toUpperCase()}${item.name.slice(1)}` // Capitalize the first letter
 		amount.innerHTML = `Amount: ${item.amount}`
 		notes.innerHTML = `Notes: ${item.notes}`
+		id.innerHTML = item.ID_
 
 		element.appendChild(heading)
 		element.appendChild(amount)
 		element.appendChild(notes)
+		element.appendChild(id)
 
 		itemContainer.appendChild(element)
 	}
@@ -138,8 +159,8 @@ let contextMenu = new ContextMenu()
 
 contextMenu.createMenu("test", {
 	"Remove item" : function(element) {removeItem(element)},
-	"Duplicate item" : function(element) {duplicateitem(element)}
+	"Duplicate item" : function(element) {duplicateItem(element)}
 
 })
-contextMenu.bindMenu("document.querySelectorAll('.item-div')*", "test")
+contextMenu.bindMenu("document.querySelectorAll('.item-div')", "test")
 
