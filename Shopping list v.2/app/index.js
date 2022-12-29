@@ -65,7 +65,11 @@ function addItem(){
 			item[input.name] = input.value
 		}
 	}
+
+	item["ID_"] = generateId()
+
 	itemList.push(item)
+	console.log(item)
 	updateItemContainer()
 }
 
@@ -82,6 +86,10 @@ function clearChildren(element){
 		element.removeChild(last)
 		last = element.lastElementChild
 	}
+}
+
+function generateId(){
+	return `${Math.floor(Math.random() * 9)}${Math.floor(Math.random() * 9)}${Math.floor(Math.random() * 9)}${Math.floor(Math.random() * 9)}${Math.floor(Math.random() * 9)}`
 }
 
 function updateItemContainer() {
